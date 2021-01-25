@@ -6,6 +6,8 @@ edition = "2018"
 description = "Runtime TokenStream interpolation for Rust macros"
 repository = "https://github.com/chesedo/tokenstream2-tmpl"
 license = "MIT"
+keywords = ["tokenstream", "interpolation", "macro"]
+categories = ["development-tools::procedural-macro-helpers"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
