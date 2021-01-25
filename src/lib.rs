@@ -1,4 +1,4 @@
-//! ![Rust](https://github.com/chesedo/quasi/workflows/Rust/badge.svg?branch=main)
+//! ![Rust](https://github.com/chesedo/tokenstream2-tmpl/workflows/Rust/badge.svg?branch=main)
 //!
 //! This crate is meant to be a complement to [quote]. Where as [quote] does quasi-quote interpolations at
 //! compile-time, this crate does them at run-time. This is handy for macros receiving templates from client code with
@@ -9,7 +9,7 @@
 //! # Examples
 //! ```
 //! use proc_macro2::TokenStream;
-//! use quasi::interpolate;
+//! use tokenstream2-tmpl::interpolate;
 //! use quote::ToTokens;
 //! use std::collections::HashMap;
 //! use syn::{Ident, parse_str};
@@ -31,16 +31,16 @@
 //! ```
 //!
 //! Here `input` might be some input to a macro that functions as a template. [quote] would have tried to expand `NAME`
-//! at the macro's compile-time. [quasi] will expand it at the macro's run-time.
+//! at the macro's compile-time. [tokenstream2-tmpl] will expand it at the macro's run-time.
 //!
-//! [quasi]: https://gitlab.com/chesedo/quasi
+//! [tokenstream2-tmpl]: https://gitlab.com/chesedo/tokenstream2-tmpl
 //!
 //! ```
 //! extern crate proc_macro;
 //! use proc_macro2::TokenStream;
 //! use std::collections::HashMap;
 //! use syn::{Ident, parse::{Parse, ParseStream, Result}, parse_macro_input, punctuated::Punctuated, Token};
-//! use quasi::{Interpolate, interpolate};
+//! use tokenstream2-tmpl::{Interpolate, interpolate};
 //! use quote::ToTokens;
 //!
 //! /// Create a token for macro using [syn](syn)

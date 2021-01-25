@@ -1,10 +1,10 @@
 [package]
-name = "quasi"
+name = "tokenstream2-tmpl"
 version = "0.1.0"
 authors = ["chesedo <pieter@chesedo.me>"]
 edition = "2018"
 description = "Runtime TokenStream interpolation for Rust macros"
-repository = "https://github.com/chesedo/quasi"
+repository = "https://github.com/chesedo/tokenstream2-tmpl"
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

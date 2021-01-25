@@ -1,4 +1,4 @@
-![Rust](https://github.com/chesedo/quasi/workflows/Rust/badge.svg?branch=main)
+![Rust](https://github.com/chesedo/tokenstream2-tmpl/workflows/Rust/badge.svg?branch=main)
 
-# quasi
+# tokenstream2-tmpl
 Runtime TokenStream interpolation for Rust macros
