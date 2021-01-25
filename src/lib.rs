@@ -1,3 +1,112 @@
+//! This crate is meant to be a complement to [quote]. Where as [quote] does quasi-quote interpolations at
+//! compile-time, this crate does them at run-time. This is handy for macros receiving templates from client code with
+//! markers to be replaced when the macro is run.
+//!
+//! [quote]: https://github.com/dtolnay/quote
+//!
+//! # Examples
+//! ```
+//! use proc_macro2::TokenStream;
+//! use quasi::interpolate;
+//! use quote::ToTokens;
+//! use std::collections::HashMap;
+//! use syn::{Ident, parse_str};
+//!
+//! let input: TokenStream = parse_str("let NAME: int = 5;")?;
+//! let expected: TokenStream = parse_str("let age: int = 5;")?;
+//!
+//! let mut replacements: HashMap<&str, &dyn ToTokens> = HashMap::new();
+//! let ident = parse_str::<Ident>("age")?;
+//! replacements.insert("NAME", &ident);
+//!
+//! let output = interpolate(input, &replacements);
+//! assert_eq!(
+//!     format!("{}", output),
+//!     format!("{}", expected)
+//! );
+//!
+//! # Ok::<(), Box<dyn std::error::Error>>(())
+//! ```
+//!
+//! Here `input` might be some input to a macro that functions as a template. [quote] would have tried to expand `NAME`
+//! at the macro's compile-time. [quasi] will expand it at the macro's run-time.
+//!
+//! [quasi]: https://gitlab.com/chesedo/quasi
+//!
+//! ```
+//! extern crate proc_macro;
+//! use proc_macro2::TokenStream;
+//! use std::collections::HashMap;
+//! use syn::{Ident, parse::{Parse, ParseStream, Result}, parse_macro_input, punctuated::Punctuated, Token};
+//! use quasi::{Interpolate, interpolate};
+//! use quote::ToTokens;
+//!
+//! /// Create a token for macro using [syn](syn)
+//! /// Type that holds a key and the value it maps to.
+//! /// An acceptable stream will have the following form:
+//! /// ```text
+//! /// key => value
+//! /// ```
+//! struct KeyValue {
+//!     pub key: Ident,
+//!     pub arrow_token: Token![=>],
+//!     pub value: Ident,
+//! }
+//!
+//! /// Make KeyValue parsable from a token stream
+//! impl Parse for KeyValue {
+//!     fn parse(input: ParseStream) -> Result<Self> {
+//!         Ok(KeyValue {
+//!             key: input.parse()?,
+//!             arrow_token: input.parse()?,
+//!             value: input.parse()?,
+//!         })
+//!     }
+//! }
+//!
+//! /// Make KeyValue interpolatible
+//! impl Interpolate for KeyValue {
+//!     fn interpolate(&self, stream: TokenStream) -> TokenStream {
+//!         let mut replacements: HashMap<_, &dyn ToTokens> = HashMap::new();
+//!
+//!         // Replace each "KEY" with the key
+//!         replacements.insert("KEY", &self.key);
+//!
+//!         // Replace each "VALUE" with the value
+//!         replacements.insert("VALUE", &self.value);
+//!
+//!         interpolate(stream, &replacements)
+//!     }
+//! }
+//!
+//! /// Macro to take a list of key-values with a template to expand each key-value
+//! # const IGNORE: &str = stringify! {
+//! #[proc_macro_attribute]
+//! # };
+//! pub fn map(tokens: proc_macro::TokenStream, template: proc_macro::TokenStream) -> proc_macro::TokenStream {
+//!     // Parse a comma separated list of key-values
+//!     let maps =
+//!         parse_macro_input!(tokens with Punctuated::<KeyValue, Token![,]>::parse_terminated);
+//!
+//!     maps.interpolate(template.into()).into()
+//! }
+//!
+//! pub fn main() {
+//! # const IGNORE: &str = stringify! {
+//!     #[map(
+//!         usize => 10,
+//!         isize => -2,
+//!         bool => false,
+//!     )]
+//!     let _: KEY = VALUE;
+//! # };
+//!     // Output:
+//!     // let _: usize = 10;
+//!     // let _: isize = -2;
+//!     // let _: bool = false;
+//! }
+//! ```
+
 use proc_macro2::{Group, TokenStream, TokenTree};
 use quote::{ToTokens, TokenStreamExt};
 use std::collections::HashMap;
@@ -6,6 +115,7 @@ use syn::punctuated::Punctuated;
 /// Trait for tokens that can replace interpolation markers
 pub trait Interpolate {
     /// Take a token stream and replace interpolation markers with their actual values into a new stream
+    /// using [interpolate](interpolate)
     fn interpolate(&self, stream: TokenStream) -> TokenStream;
 }
 
@@ -20,8 +130,8 @@ impl<T: Interpolate, P> Interpolate for Punctuated<T, P> {
     }
 }
 
-/// Replace the interpolation markers in a token stream with a specific text
-/// Thus, if `stream` is "let a: TRAIT;" and `replacements` has the key "TRAIT" with value "Button", then this will return a stream with "let a: Button;".
+/// Replace the interpolation markers in a token stream with a specific text.
+/// See this [crate's](crate) documentation for an example on how to use this.
 pub fn interpolate(
     stream: TokenStream,
     replacements: &HashMap<&str, &dyn ToTokens>,
