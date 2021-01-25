@@ -1,3 +1,5 @@
+//! ![Rust](https://github.com/chesedo/quasi/workflows/Rust/badge.svg?branch=main)
+//!
 //! This crate is meant to be a complement to [quote]. Where as [quote] does quasi-quote interpolations at
 //! compile-time, this crate does them at run-time. This is handy for macros receiving templates from client code with
 //! markers to be replaced when the macro is run.
