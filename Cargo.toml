@@ -2,7 +2,7 @@
 name = "tokenstream2-tmpl"
 version = "0.1.2"
 authors = ["chesedo <pieter@chesedo.me>"]
-edition = "2018"
+edition = "2021"
 description = "Runtime TokenStream interpolation for Rust macros"
 repository = "https://github.com/chesedo/tokenstream2-tmpl"
 license = "MIT"
