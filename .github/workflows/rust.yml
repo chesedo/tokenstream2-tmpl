@@ -16,7 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build
-      run: cargo build --verbose
+    - name: Check formatting
+      run: bash scripts.sh cf
+    - name: Clippy
+      run: bash scripts.sh cc
     - name: Run tests
-      run: cargo test --verbose --tests
+      run: bash scripts.sh ct
