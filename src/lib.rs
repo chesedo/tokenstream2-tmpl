@@ -14,7 +14,7 @@
 //! # Examples
 //! ```
 //! use proc_macro2::TokenStream;
-//! use tokenstream2-tmpl::interpolate;
+//! use tokenstream2_tmpl::interpolate;
 //! use quote::ToTokens;
 //! use std::collections::HashMap;
 //! use syn::{Ident, parse_str};
@@ -45,7 +45,7 @@
 //! use proc_macro2::TokenStream;
 //! use std::collections::HashMap;
 //! use syn::{Ident, parse::{Parse, ParseStream, Result}, parse_macro_input, punctuated::Punctuated, Token};
-//! use tokenstream2-tmpl::{Interpolate, interpolate};
+//! use tokenstream2_tmpl::{Interpolate, interpolate};
 //! use quote::ToTokens;
 //!
 //! /// Create a token for macro using [syn](syn)
@@ -244,6 +244,7 @@ mod tests {
     /// Test the interpolation of Punctuated items
     #[test]
     fn interpolate_on_punctuated() -> Result {
+        #[allow(dead_code)]
         pub struct TraitSpecifier {
             pub abstract_trait: Type,
             pub arrow_token: Token![=>],
