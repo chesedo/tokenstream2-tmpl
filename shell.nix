@@ -41,7 +41,7 @@ shellHook = ''
     source scripts.sh
     printf "\n\033[1;34m=============================================\033[0m"
 
-    printf "\n\033[1;33m• Checking for any outdated packages...\033[0m"
+    printf "\n\033[1;33m• Checking for any outdated packages...\033[0m\n"
     cargo outdated
   '';
 }

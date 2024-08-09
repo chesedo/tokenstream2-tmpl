@@ -13,8 +13,8 @@ categories = ["development-tools::procedural-macro-helpers"]
 
 [dependencies]
 quote = "1.0"
-syn = "1.0"
+syn = "2.0"
 proc-macro2 = "1.0"
 
 [dev-dependencies]
-pretty_assertions = "0.6"
+pretty_assertions = "1.0"
