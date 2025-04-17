@@ -15,10 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Check formatting
-      run: bash scripts.sh cf
-    - name: Clippy
-      run: bash scripts.sh cc
-    - name: Run tests
-      run: bash scripts.sh ct
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - run: nix flake check
